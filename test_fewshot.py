@@ -23,7 +23,7 @@ MEAN, STD = 0.5347, 0.0772
 
 report = {}
 
-modelcheckpoint = args.modelckpt # '/users/local/i21moumm/birdset_ckpt/distill/distilled_mobilenetv3l_pretrain_XCM_epochs100_lr0.05_trial1.pth'
+modelcheckpoint = args.modelckpt
 
 print(f"{args.nshots}-shot Learning")
 
@@ -102,8 +102,6 @@ for testds in ['POW', 'PER', 'NES', 'UHH', 'HSN', 'NBP', 'SSW', 'SNE']:
 
     if 'ce' in modelcheckpoint:
         encoder.load_state_dict(torch.load(modelcheckpoint, map_location='cpu')['encoder'])
-    elif 'distill'  in modelcheckpoint:
-        encoder.load_state_dict(torch.load(modelcheckpoint, map_location='cpu')[0])
     else:
         encoder.load_state_dict(torch.load(modelcheckpoint, map_location='cpu'))
     encoder = encoder.to(args.device)

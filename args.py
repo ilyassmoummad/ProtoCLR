@@ -9,10 +9,9 @@ parser.add_argument("--debug", action='store_true') #load data only, to make sur
 parser.add_argument("--device", type=str, default='cuda') #device to use ['cpu', 'cuda', 'cuda:0', 'cuda:1', ...]
 
 # Path
-parser.add_argument("--datadir", type=str, default='/users3/local/hf_birdset/') #path for downloading/loading the dataset
+parser.add_argument("--datadir", type=str, default='') #path for downloading/loading the dataset
 parser.add_argument("--model", type=str, default='mobilenetv3l') #models supported ['mobilenetv3l', 'mobilenetv3s', 'cvt']
-parser.add_argument("--teachermodel", type=str, default='mobilenetv3l') #['mobilenetv3s', 'mobilenetv3l', 'cvt']
-parser.add_argument("--savepath", type=str, default='/nasbrain/i21moumm/birdset/ckpt') #path where to save checkpoints
+parser.add_argument("--savepath", type=str, default='') #path where to save checkpoints
 parser.add_argument("--modelckpt", type=str, default='') #path of the checkpoint (.pth)
 
 # Data Processing
