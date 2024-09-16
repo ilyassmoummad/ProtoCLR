@@ -3,9 +3,11 @@
 ## Authors
 <sup>1</sup> Ilyass Moummad, <sup>2</sup> Romain Serizel, <sup>3</sup> Emmanouil Benetos, <sup>1</sup> Nicolas Farrugia
 
-1. <sup>1</sup> IMT Atlantique, Lab-STICC, Brest, France
-2. <sup>2</sup> Université de Lorraine, LORIA, INRIA, Nancy, France  
-3. <sup>3</sup> C4DM, Queen Mary University of London, London, UK  
+<sup>1</sup> IMT Atlantique, Lab-STICC, Brest, France
+
+<sup>2</sup> Université de Lorraine, LORIA, INRIA, Nancy, France  
+
+<sup>3</sup> C4DM, Queen Mary University of London, London, UK  
 
 ## ProtoCLR (Prototypical Contrastive Learning of Representations)
 In this work, we propose ProtoCLR as a more efficient alternative to SupCon. Both methods demonstrate robustness to domain shift, specifically when pre-training on focal recordings and testing on soundscape recordings. This repository provides the code to train feature extractors on Xeno-Canto and perform few-shot evaluation on various downstream tasks.
@@ -61,7 +63,7 @@ python3 test_fewshot.py --nshots 5 --model mobilenetv3l --modelckpt /path/to/mob
 
 ## Citation
 ```
-@misc{moummad2024domaininvariantrepresentationlearningbird,
+@misc{moummad2024dirlbs,
       title={Domain-Invariant Representation Learning of Bird Sounds}, 
       author={Ilyass Moummad and Romain Serizel and Emmanouil Benetos and Nicolas Farrugia},
       year={2024},
