@@ -15,14 +15,16 @@ In this work, we propose ProtoCLR as a more efficient alternative to SupCon. Bot
 ## Preprint
 [Domain-Invariant Representation Learning of Bird Sounds](https://arxiv.org/abs/2409.08589)
 
+## A detailed README will be provided in the upcoming weeks.
+
 ## Getting Started
 
-### Step 1: BirdSet Installation
-1. Clone the [BirdSet](https://github.com/DBD-research-group/BirdSet) benchmark repository.
-2. Follow the installation steps in their repo and download the required datasets.
+### Step 1: DownLoading Data
+<!-- 1. Clone the [BirdSet](https://github.com/DBD-research-group/BirdSet) benchmark repository.
+2. Follow the installation steps in their repo and download the required datasets. -->
 
 ### Step 2: Install Dependencies
-Install requirements.txt from both BirdSet and this repository:
+<!-- Install requirements.txt from both BirdSet and this repository:
 
 ```bash
 pip install -r requirements.txt 
@@ -32,10 +34,10 @@ pip install -r requirements.txt
 
 ```bash
 python3 train_encoder.py --debug
-```
+``` -->
 
-### Step 4: Train the Encoder
-**ProtoCLR with CvT-13**
+### Step 3: Train Feature Extractor
+<!-- **ProtoCLR with CvT-13**
 
 ```bash
 python3 train_encoder.py --loss protoclr --pretrainds XCM --epochs 100 --adam --nworkers 16 --bs 256 --lr 5e-4 --wd 1e-6 --device cuda:0 --model cvt13 --datadir birdset_path --savepath path_for_checkpoint --save
@@ -49,15 +51,15 @@ python3 train_encoder.py --loss supcon --pretrainds XCM --epochs 100 --nworkers 
 
 For more details about the arguments, refer to args.py.
 
-**Note** Adjust the number of workers (--nworkers) based on your machine to avoid data loader bottlenecks, which can slow down training.
+**Note** Adjust the number of workers (--nworkers) based on your machine to avoid data loader bottlenecks, which can slow down training. -->
 
-### Step 5: Few-shot Evaluation
+### Step 4: Few-shot Evaluation
 
-To evaluate the model on a 5-shot task, run the following:
+<!-- To evaluate the model on a 5-shot task, run the following:
 ```bash
 python3 test_fewshot.py --nshots 5 --model mobilenetv3l --modelckpt /path/to/mobilenetv3l_supcon_pretrain_XCM_checkpoint.pth --bs 1024 --nworkers 16 --datadir /path/to/hf_birdset/
 ```
-**Note** Reduce the batch size (--bs) if it doesn't fit in your GPU memory.
+**Note** Reduce the batch size (--bs) if it doesn't fit in your GPU memory. -->
 
 ## More details and checkpoints (soon)
 
