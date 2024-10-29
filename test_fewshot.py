@@ -1,117 +1,74 @@
-from birdset.datamodule.components.transforms import BirdSetTransformsWrapper
-from birdset.configs import LoaderConfig, LoadersConfig
-from birdset.datamodule.components import XCEventMapping, EventDecoding
-from birdset.datamodule.birdset_datamodule import BirdSetDataModule
-from birdset.datamodule.base_datamodule import DatasetConfig
-
-from utils import Normalization, Standardization, model_dim
-from test_utils import sample_episode, nearest_prototype
-from mobilenetv3 import mobilenetv3s, mobilenetv3l
+from utils import Normalization, Standardization
+from torch.utils.data import DataLoader
 from torchaudio import transforms as T
-from test_utils import fewshoteval
-from tqdm import tqdm
-import torch.nn as nn
-from args import args
+from eval_utils import fewshot_test
+from dataset import PTDataset
 from cvt import cvt13
+from args import args
+import torch.nn as nn
 import warnings
 import torch
 import os
 
 warnings.filterwarnings("ignore")
 
+modelckpt = args.modelckpt
+FILENAME = "./results_" + modelckpt.split('/')[-1][:-4] + ".txt"
+
 MEAN, STD = 0.5347, 0.0772
 
 report = {}
 
-modelcheckpoint = args.modelckpt
+if args.report:
+    with open(FILENAME, 'a+') as file:
+        text = f"{modelckpt}"
+        file.write(text + '\n')
+for shot in [1, 5]:
+    print(f"{shot}-shot")
+    if args.report:
+        with open(FILENAME, 'a+') as file:
+            text = f"{shot}-shot"
+            file.write(text + '\n')
+    for testds in ['PER', 'NES', 'UHH', 'HSN', 'SSW', 'SNE']:
+        if testds == 'PER':
+            testds_name = 'peru'
+        elif testds == 'NES':
+            testds_name = 'coffee_farms'
+        elif testds == 'UHH':
+            testds_name = 'hawaii'
+        elif testds == 'HSN':
+            testds_name = 'high_sierras'
+        elif testds == 'SSW':
+            testds_name = 'ssw'
+        elif testds == 'SNE':
+            testds_name = 'sierras_kahl'
 
-print(f"{args.nshots}-shot Learning")
+        fs_ds = PTDataset(os.path.join(args.evaldir, testds_name))
+        loader = DataLoader(dataset=fs_ds, batch_size=args.bs, num_workers=args.nworkers, persistent_workers=True, pin_memory=True, shuffle=False, drop_last=False)
 
-for testds in ['POW', 'PER', 'NES', 'UHH', 'HSN', 'NBP', 'SSW', 'SNE']:
+        # Preprocessing Transformations
+        time_steps = 301 # int(args.sr*args.duration/args.hoplen)=300
+        melspec = T.MelSpectrogram(sample_rate=args.sr, n_fft=args.nfft, hop_length=args.hoplen, f_min=args.fmin, f_max=args.fmax, n_mels=args.nmels)
+        power_to_db = T.AmplitudeToDB()
+        norm = Normalization()
+        sd = Standardization(mean=MEAN, std=STD)
+        transform = nn.Sequential(melspec, power_to_db, norm, sd).to(args.device)
 
-    data_config = DatasetConfig(
-        data_dir=os.path.join(args.datadir, testds),
-        dataset_name=testds,
-        hf_path='DBD-research-group/BirdSet',
-        hf_name=testds,
-        n_workers=args.nworkers,
-        val_split=0.2,
-        task="multiclass",
-        classlimit=500,
-        eventlimit=5,
-        sampling_rate=args.sr,
-    )
+        # Model
+        encoder = cvt13()#.to(args.device)
+        if 'ce' in modelckpt:
+            encoder.load_state_dict(torch.load(modelckpt, map_location='cpu')['encoder']) # my code saves both encoder and projector for cross-entropy
+        else:
+            encoder.load_state_dict(torch.load(modelckpt, map_location='cpu'))
+        encoder = encoder.to(args.device)
 
-    fs_loader_config = LoaderConfig(
-        batch_size=args.bs,
-        shuffle=True,
-        num_workers=args.nworkers,
-        pin_memory=True,
-        drop_last=False,
-        persistent_workers=True,
-    )
+        # Testing
+        acc, std = fewshot_test(encoder, loader, transform, args, shot)
 
-    loaders_config = LoadersConfig(
-        train=fs_loader_config,
-        valid=fs_loader_config,
-    )
+        report[testds] = {'acc': acc, 'std': std}
+        print(f"{testds}: {report[testds]['acc']}+-{report[testds]['std']}\n")
 
-    transforms = BirdSetTransformsWrapper(
-        task="multiclass",
-        sampling_rate=args.sr,
-        model_type="waveform",
-        decoding=None,
-        feature_extractor=None,
-        max_length=args.duration,
-        nocall_sampler=None,
-        preprocessing=None,
-    )
-
-    fs_ds = BirdSetDataModule(
-        dataset = data_config,
-        loaders = loaders_config,
-        transforms = transforms,
-    )
-
-    fs_ds.prepare_data()
-
-    fs_ds.setup(stage="fit")
-
-    loader1 = fs_ds.train_dataloader()
-    loader2 = fs_ds.val_dataloader()
-
-    time_steps = 251 # int(args.sr*args.duration/args.hoplen)=250
-    melspec = T.MelSpectrogram(sample_rate=args.sr, n_fft=args.nfft, hop_length=args.hoplen, f_min=args.fmin, f_max=args.fmax, n_mels=args.nmels)
-    power_to_db = T.AmplitudeToDB()
-    norm = Normalization()
-    sd = Standardization(mean=MEAN, std=STD)
-    transform = nn.Sequential(melspec, power_to_db, norm, sd).to(args.device)
-
-    if args.model == 'mobilenetv3s':
-        encoder = mobilenetv3s()
-    elif args.model == 'mobilenetv3l':
-        encoder = mobilenetv3l()
-    elif args.model == 'cvt13':
-        encoder = cvt13()
-    else:
-        print("Invalid model")
-        quit()
-
-    avgacc = []
-    avgstd = []
-
-    if 'ce' in modelcheckpoint:
-        encoder.load_state_dict(torch.load(modelcheckpoint, map_location='cpu')['encoder'])
-    else:
-        encoder.load_state_dict(torch.load(modelcheckpoint, map_location='cpu'))
-    encoder = encoder.to(args.device)
-
-    print(f"Few-shot eval on {testds}")
-    acc, std = fewshoteval(encoder, loader1, loader2, transform, args)
-    print(f"Acc for {args.nruns} runs on {testds}: {acc}+-{std}")
-    report[testds] = {'acc': acc, 'std': std}
-
-print("---------------------------")
-print(f"Results for {shot}-shot:\n")
-for testds in ['POW', 'PER', 'NES', 'UHH', 'HSN', 'NBP', 'SSW', 'SNE']:
-    print(f"{testds}: {report[testds]['acc']}+-{report[testds]['std']}\n")
+    if args.report:
+        with open(FILENAME, 'a+') as f:
+            for testds in ['PER', 'NES', 'UHH', 'HSN', 'SSW', 'SNE']:
+                f.write(f"{testds}: {report[testds]['acc']}+-{report[testds]['std']}\n")

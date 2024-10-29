@@ -32,7 +32,7 @@ class MixRandom(torch.nn.Module):
         return mix_random(x, self.min_coef)
     
 class SpecAugment(torch.nn.Module):
-    def __init__(self, freq_mask=20, time_mask=50, freq_stripes=2, time_stripes=2, p=1.0, iid_masks=True):
+    def __init__(self, freq_mask=10, time_mask=30, freq_stripes=3, time_stripes=5, p=1.0, iid_masks=True):
         super().__init__()
         self.p = p
         self.freq_mask = freq_mask

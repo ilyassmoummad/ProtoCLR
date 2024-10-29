@@ -20,7 +20,7 @@ class Standardization(torch.nn.Module):
         return (x - self.mean) / self.std
     
 class Projector(nn.Module):
-    def __init__(self, model_name='mobilenetv3l', out_dim=128):
+    def __init__(self, model_name='cvt', out_dim=128):
         super(Projector, self).__init__()
         dim = model_dim[model_name]
         out_dim = out_dim
@@ -33,6 +33,4 @@ class Projector(nn.Module):
     
 model_dim = {
     'cvt': 384,
-    'mobilenetv3s': 576,
-    'mobilenetv3l': 960,
 }

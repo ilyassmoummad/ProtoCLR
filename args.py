@@ -9,8 +9,8 @@ parser.add_argument("--debug", action='store_true') #load data only, to make sur
 parser.add_argument("--device", type=str, default='cuda') #device to use ['cpu', 'cuda', 'cuda:0', 'cuda:1', ...]
 
 # Path
-parser.add_argument("--datadir", type=str, default='') #path for downloading/loading the dataset
-parser.add_argument("--model", type=str, default='mobilenetv3l') #models supported ['mobilenetv3l', 'mobilenetv3s', 'cvt']
+parser.add_argument("--traindir", type=str, default='') #path for the training data
+parser.add_argument("--evaldir", type=str, default='') #path for the evaluation (validation/testing) data
 parser.add_argument("--savepath", type=str, default='') #path where to save checkpoints
 parser.add_argument("--modelckpt", type=str, default='') #path of the checkpoint (.pth)
 
@@ -32,7 +32,7 @@ parser.add_argument("--mincoef", type=float, default=0.6) #minimum coef for spec
 parser.add_argument("--fmask", type=int, default=10) #fmax
 parser.add_argument("--tmask", type=int, default=30) #tmax
 parser.add_argument("--fstripe", type=int, default=3) #fstripe
-parser.add_argument("--tstripe", type=int, default=4) #tstripe
+parser.add_argument("--tstripe", type=int, default=5) #tstripe
 
 # Loss
 parser.add_argument("--loss", type=str, default='protoclr') #loss to use for training ['simclr', 'supcon', 'protoclr', 'ce']
@@ -40,7 +40,6 @@ parser.add_argument("--tau", type=float, default=0.1) #temperature for cosine si
 
 # Training
 parser.add_argument("--adam", action='store_true') #use adam instead of sgd
-parser.add_argument("--pretrainds", type=str, default='XCM') #pretraining dataset ['XCM', 'XCL']
 parser.add_argument("--bs", type=int, default=256) #batch size for representation learning
 parser.add_argument("--epochs", type=int, default=100) #nb of epochs to train the feature extractor on the training set
 parser.add_argument("--lr", type=float, default=5e-2) #learning rate for pretraining
