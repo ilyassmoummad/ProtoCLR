@@ -26,9 +26,9 @@ The pre-trained ProtoCLR model checkpoint, trained for 300 epochs, is now availa
 
 ### Audio Preparation Guidelines
 To use the model effectively, ensure your audio files meet the following criteria:
-- **Sample Rate**: 16 kHz
-- **Padding**: For audio shorter than 6 seconds, pad with zeros or repeat to reach a 6-second length.
-- **Chunking**: For audio longer than 6 seconds, split into 6-second chunks.
+- **Sample Rate**: 16 kHz (Mandatory).
+- **Padding**: For audio shorter than 6 seconds, pad with zeros or repeat to reach a 6-second length (Recommended).
+- **Chunking**: For audio longer than 6 seconds, consider splitting into 6-second chunks (Recommended).
 
 ### Example: Loading, Processing, and Running Inference on an Audio File
 This example demonstrates how to load an audio file, preprocess it, and run inference with the ProtoCLR model.
