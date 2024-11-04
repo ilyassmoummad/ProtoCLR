@@ -32,7 +32,7 @@ To use the model effectively, ensure your audio meets the following criteria:
 - **Chunking (Recommended)**: For audio longer than 6 seconds, consider splitting it into 6-second chunks.
 
 ### Example: Loading, Processing, and Running Inference on an Audio File
-This example demonstrates how to load an audio file, preprocess it, and run inference with the ProtoCLR model.
+This example demonstrates how to load an audio file, preprocess it, and run inference with the ProtoCLR model. First, download the model and code from the [Hugging Face repository](https://huggingface.co/ilyassmoummad/ProtoCLR).
 
 ```python
 import torch
