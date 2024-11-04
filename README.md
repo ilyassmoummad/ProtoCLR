@@ -13,7 +13,7 @@
 
 In this work, we introduce [ProtoCLR](https://arxiv.org/abs/2409.08589), an efficient alternative to [SupCon](https://arxiv.org/abs/2004.11362), specifically designed for representation learning. We validate ProtoCLR in transfer learning for bird sound classification, pre-training on focal recordings and evaluating on soundscape recordings in few-shot scenarios. Our approach demonstrates strong robustness to domain shift, making it well-suited for real-world applications.
 
-The results reported in the paper are based on experiments conducted over 100 epochs. Current experiments are being extended to 300 epochs to explore the benefits of longer training in contrastive learning, which will be included in the upcoming days/weeks. Additionally, we aim to enhance ProtoCLR by incorporating a hierarchical structure, enabling it to capture finer-grained relationships among bird species.
+The results reported in the pre-print are based on experiments conducted over 100 epochs. Current experiments are being extended to 300 epochs to explore the benefits of longer training in contrastive learning, which will be included in the upcoming days/weeks. Additionally, we enhance ProtoCLR by incorporating a hierarchical structure, enabling it to capture finer-grained relationships among bird species.
 
 This repository provides detailed instructions for downloading and preparing training and evaluation datasets, hosted on Hugging Face and Zenodo in `.pt` format. The straightforward format and provided code ensure easy accessibility and reproducibility, supporting research in bird sound classification, especially within few-shot learning contexts.
 
@@ -42,7 +42,7 @@ The Xeno-Canto dataset contains a large collection of bird sound recordings opti
    cat DESTINATION_PATH/*tar* > DESTINATION_PATH/xc-6s-16khz-pann.tar
    tar -xvf DESTINATION_PATH/xc-6s-16khz-pann.tar -C DATASET_PATH
 
-### 1.2 Evaluation Data (Validation and Test)
+#### 1.2 Evaluation Data (Validation and Test)
 The evaluation datasets are sourced from the BIRB benchmark, a collection of soundscape datasets for evaluating bird sound classification in challenging, real-world conditions.
 
 Download the evaluation datasets (validation and test) from [Zenodo](https://zenodo.org/records/13994373).
@@ -79,9 +79,9 @@ python3 train_encoder.py --loss protoclr --epochs 300 --nworkers 16 --bs 256 --l
 
 - **`--loss`**: Specifies the loss function to use. The following losses are supported: `protoclr`, `supcon`, `simclr`, and `ce` (cross-entropy).
 
-- **`--traindir Path_to_Xeno-Canto-6s-16khz/`**: Path to the training data directory containing the Xeno-Canto bird sound dataset. This directory should contain the decompressed data downloaded from Hugging Face.
+- **`--traindir`**: Path to the training data directory containing the Xeno-Canto bird sound dataset. This directory should contain the decompressed data downloaded from Hugging Face.
 
-- **`--evaldir Path_to_parent_folder_of_pow.pt`**: Path to the evaluation data directory where the validation `.pt` file (`pow.pt`) is stored. This file will be used for evaluating model performance during training.
+- **`--evaldir`**: Path to the evaluation data directory where the validation file (`pow.pt`) is stored. This file will be used for evaluating model performance during training.
 
 For more details about the arguments, refer to args.py.
 
@@ -91,11 +91,15 @@ For more details about the arguments, refer to args.py.
 
 To evaluate the model on one- and five-shot tasks, run the following script:
 ```bash
-python3 test_fewshot.py --modelckpt /path/to/cvt.pth --bs 1024 --nworkers 16 --traindir /users/local/soundscapes/pt-data/ --report
+python3 test_fewshot.py --modelckpt /path/to/weights.pth --bs 1024 --nworkers 16 --evaldir /path/to/soundscapes --report
 ```
 **Note** Reduce the batch size (--bs) if it doesn't fit in your GPU memory.
 
-## Checkpoints and models on Hugging Face soon
+## Checkpoints
+
+The pre-trained ProtoCLR model checkpoint is now available on Hugging Face and can be directly accessed and downloaded for use in your bioacoustic projects.
+
+- [ProtoCLR CvT-13 300 epochs model checkpoint](https://huggingface.co/ilyassmoummad/ProtoCLR)
 
 ## Citation
 ```
