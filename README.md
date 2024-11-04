@@ -3,24 +3,66 @@
 ## Authors
 <sup>1</sup> Ilyass Moummad, <sup>2</sup> Romain Serizel, <sup>3</sup> Emmanouil Benetos, <sup>1</sup> Nicolas Farrugia
 
-<sup>1</sup> IMT Atlantique, Lab-STICC, Brest, France
-
+<sup>1</sup> IMT Atlantique, Lab-STICC, Brest, France  
 <sup>2</sup> Université de Lorraine, LORIA, INRIA, Nancy, France  
-
 <sup>3</sup> C4DM, Queen Mary University of London, London, UK  
 
-## ProtoCLR (Prototypical Contrastive Learning of Representations)
+---
 
-In this work, we introduce [ProtoCLR](https://arxiv.org/abs/2409.08589), an efficient alternative to [SupCon](https://arxiv.org/abs/2004.11362), specifically designed for representation learning. We validate ProtoCLR in transfer learning for bird sound classification, pre-training on focal recordings and evaluating on soundscape recordings in few-shot scenarios. Our approach demonstrates strong robustness to domain shift, making it well-suited for real-world applications.
+## Overview
+This repository introduces [ProtoCLR](https://arxiv.org/abs/2409.08589), a Prototypical Contrastive Learning approach designed for robust representation learning. ProtoCLR has been validated on transfer learning tasks for bird sound classification, showing strong domain-invariance in few-shot scenarios.
 
-The results reported in the pre-print are based on experiments conducted over 100 epochs. Current experiments are being extended to 300 epochs to explore the benefits of longer training in contrastive learning, which will be included in the upcoming days/weeks. Additionally, we enhance ProtoCLR by incorporating a hierarchical structure, enabling it to capture finer-grained relationships among bird species.
-
-This repository provides detailed instructions for downloading and preparing training and evaluation datasets, hosted on Hugging Face and Zenodo in `.pt` format. The straightforward format and provided code ensure easy accessibility and reproducibility, supporting research in bird sound classification, especially within few-shot learning contexts.
+Our approach uses focal recordings for pre-training and soundscape recordings for evaluation, demonstrating robustness to domain shifts. The results provided in this repository are based on models trained for 100 epochs, while ongoing experiments with 300 epochs are being added to explore extended training benefits.
 
 ## Preprint
-[Domain-Invariant Representation Learning of Bird Sounds](https://arxiv.org/abs/2409.08589)
+Read the full paper: [Domain-Invariant Representation Learning of Bird Sounds](https://arxiv.org/abs/2409.08589)
 
-## Getting Started
+---
+
+## Checkpoints
+The pre-trained ProtoCLR model checkpoint is available on Hugging Face and can be directly accessed and integrated into your bioacoustic projects.
+
+- [ProtoCLR CvT-13 300 epochs model checkpoint](https://huggingface.co/ilyassmoummad/ProtoCLR)
+
+### Audio Preparation Guidelines
+To use the model effectively, ensure your audio files meet the following criteria:
+- **Sample Rate**: 16 kHz
+- **Padding**: For audio shorter than 6 seconds, pad with zeros or repeat to reach a 6-second length.
+- **Chunking**: For audio longer than 6 seconds, split into 6-second chunks.
+
+### Example: Loading, Processing, and Running Inference on an Audio File
+This example demonstrates how to load an audio file, preprocess it, and run inference with the ProtoCLR model.
+
+```python
+import torch
+from cvt import cvt13  # Import model architecture
+from melspectrogram import MelSpectrogramProcessor  # Import Mel spectrogram processor
+
+# Initialize preprocessor and model
+preprocessor = MelSpectrogramProcessor()
+model = cvt13()
+model.load_state_dict(torch.load("protoclr.pth"))
+model.eval()
+
+# Load and preprocess a sample audio waveform
+def load_waveform(file_path):
+    # Replace with audio loading code, e.g., torchaudio to load and resample
+    pass
+
+waveform = load_waveform("path/to/audio.wav")  # Load audio here
+
+# Ensure waveform is sampled at 16 kHz, then pad/chunk to reach a 6-second length
+input_tensor = preprocessor.process(waveform).unsqueeze(0)  # Add batch dimension
+
+# Run the model on preprocessed audio
+with torch.no_grad():
+    output = model(input_tensor)
+    print("Model output shape:", output.shape)
+```
+
+---
+
+## Experiments
 
 ### Step 1: Downloading Data
 
@@ -95,11 +137,7 @@ python3 test_fewshot.py --modelckpt /path/to/weights.pth --bs 1024 --nworkers 16
 ```
 **Note** Reduce the batch size (--bs) if it doesn't fit in your GPU memory.
 
-## Checkpoints
-
-The pre-trained ProtoCLR model checkpoint is now available on Hugging Face and can be directly accessed for use in your bioacoustic projects with few lines of code.
-
-- [ProtoCLR CvT-13 300 epochs model checkpoint](https://huggingface.co/ilyassmoummad/ProtoCLR)
+---
 
 ## Citation
 ```
