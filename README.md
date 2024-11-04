@@ -97,7 +97,7 @@ python3 test_fewshot.py --modelckpt /path/to/weights.pth --bs 1024 --nworkers 16
 
 ## Checkpoints
 
-The pre-trained ProtoCLR model checkpoint is now available on Hugging Face and can be directly accessed and downloaded for use in your bioacoustic projects.
+The pre-trained ProtoCLR model checkpoint is now available on Hugging Face and can be directly accessed for use in your bioacoustic projects with few lines of code.
 
 - [ProtoCLR CvT-13 300 epochs model checkpoint](https://huggingface.co/ilyassmoummad/ProtoCLR)
 
