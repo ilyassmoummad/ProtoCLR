@@ -29,7 +29,7 @@ To use the model effectively, ensure your audio meets the following criteria:
 - **Mono Channel (Mandatory)**: If the audio has multiple channels, average them to create a single mono channel.
 - **Sample rate (Mandatory)**: Resample your audio to a sample rate of 16 kHz.
 - **Padding (Recommended)**: For audio shorter than 6 seconds, either pad with zeros or repeat the audio until it reaches 6 seconds.
-- **Chunking (Recommended)**: For audio longer than 6 seconds, consider split it into 6-second chunks.
+- **Chunking (Recommended)**: For audio longer than 6 seconds, consider splitting it into 6-second chunks.
 
 ### Example: Loading, Processing, and Running Inference on an Audio File
 This example demonstrates how to load an audio file, preprocess it, and run inference with the ProtoCLR model.
