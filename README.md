@@ -12,7 +12,7 @@
 ## Overview
 This repository introduces [ProtoCLR](https://arxiv.org/abs/2409.08589), a Prototypical Contrastive Learning approach designed for robust representation learning. ProtoCLR has been validated on transfer learning tasks for bird sound classification, showing strong domain-invariance in few-shot scenarios.
 
-Our approach uses focal recordings for pre-training and soundscape recordings for evaluation, demonstrating robustness to domain shifts. The results provided in this repository are based on models trained for 100 epochs, while ongoing experiments with 300 epochs are being added to explore extended training benefits.
+In our approach, focal recordings are utilized for pre-training, while soundscape recordings serve as the evaluation dataset, highlighting ProtoCLR's robustness to domain shifts. The initial results in the preprint are based on models trained for 100 epochs, with an update expected in the coming days/weeks to include results from extended training at 300 epochs.
 
 ## Preprint
 Read the full paper: [Domain-Invariant Representation Learning of Bird Sounds](https://arxiv.org/abs/2409.08589)
@@ -20,7 +20,7 @@ Read the full paper: [Domain-Invariant Representation Learning of Bird Sounds](h
 ---
 
 ## Checkpoints
-The pre-trained ProtoCLR model checkpoint is available on Hugging Face and can be directly accessed and integrated into your bioacoustic projects.
+The pre-trained ProtoCLR model checkpoint, trained for 300 epochs, is now available on Hugging Face and can be directly accessed and integrated into your bioacoustic projects.
 
 - [ProtoCLR CvT-13 300 epochs model checkpoint](https://huggingface.co/ilyassmoummad/ProtoCLR)
 
