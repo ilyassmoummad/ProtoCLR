@@ -134,9 +134,30 @@ For more details about the arguments, refer to args.py.
 
 To evaluate the model on one- and five-shot tasks, run the following script:
 ```bash
-python3 test_fewshot.py --modelckpt /path/to/weights.pth --bs 1024 --nworkers 16 --evaldir /path/to/soundscapes --report
+python3 test_fewshot.py --modelckpt /path/to/weights.pth --bs 1024 --nworkers 16 --evaldir /path/to/soundscapes --device cuda:0 --report
 ```
 **Note** Reduce the batch size (--bs) if it doesn't fit in your GPU memory.
+
+### Model Performance Comparison
+The following table presents the classification accuracy of various models on one-shot and five-shot bird sound classification tasks, evaluated across different [soundscape datasets](https://zenodo.org/records/13994373).
+
+| Model                     | Model Size | PER         | NES         | UHH         | HSN         | SSW         | SNE         | Mean  |
+|---------------------------|------------|-------------|-------------|-------------|-------------|-------------|-------------|-------|
+| Random Guessing           | -          | 0.75        | 1.12        | 3.70        | 5.26        | 1.04        | 1.78        | 2.22  |
+|                           |            |             |             |             |             |             |             |       |
+| **1-Shot Classification** |            |             |             |             |             |             |             |       |
+| BirdAVES-biox-base        | 90M        | 7.41±1.0    | 26.4±2.3    | 13.2±3.1    | 9.84±3.5    | 8.74±0.6    | 14.1±3.1    | 13.2  |
+| BirdAVES-bioxn-large      | 300M       | 7.59±0.8    | 27.2±3.6    | 13.7±2.9    | 12.5±3.6    | 10.0±1.4    | 14.5±3.2    | 14.2  |
+| BioLingual                | 28M        | 6.21±1.1    | 37.5±2.9    | 17.8±3.5    | 17.6±5.1    | 22.5±4.0    | 26.4±3.4    | 21.3  |
+| Perch                     | 80M        | 9.10±5.3    | 42.4±4.9    | 19.8±5.0    | 26.7±9.8    | 22.3±3.3    | 29.1±5.9    | 24.9  |
+| ProtoCLR (Ours)           | 19M        | 9.23±1.6    | 38.6±5.1    | 18.4±2.3    | 21.2±7.3    | 15.5±2.3    | 25.8±5.2    | 21.4  |
+|                           |            |             |             |             |             |             |             |       |
+| **5-Shot Classification** |            |             |             |             |             |             |             |       |
+| BirdAVES-biox-base        | 90M        | 11.6±0.8    | 39.7±1.8    | 22.5±2.4    | 22.1±3.3    | 16.1±1.7    | 28.3±2.3    | 23.3  |
+| BirdAVES-bioxn-large      | 300M       | 15.0±0.9    | 42.6±2.7    | 23.7±3.8    | 28.4±2.4    | 18.3±1.8    | 27.3±2.3    | 25.8  |
+| BioLingual                | 28M        | 13.6±1.3    | 65.2±1.4    | 31.0±2.9    | 34.3±3.5    | 43.9±0.9    | 49.9±2.3    | 39.6  |
+| Perch                     | 80M        | 21.2±1.2    | 71.7±1.5    | 39.5±3.0    | 52.5±5.9    | 48.0±1.9    | 59.7±1.8    | 48.7  |
+| ProtoCLR (Ours)           | 19M        | 19.2±1.1    | 67.9±2.8    | 36.1±4.3    | 48.0±4.3    | 34.6±2.3    | 48.6±2.8    | 42.4  |
 
 ---
 
