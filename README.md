@@ -20,9 +20,7 @@ Read the full paper: [Domain-Invariant Representation Learning of Bird Sounds](h
 ---
 
 ## Checkpoints
-The pre-trained ProtoCLR model checkpoint, trained for 300 epochs, is now available on Hugging Face and can be directly accessed and integrated into your bioacoustic projects.
-
-- [ProtoCLR CvT-13 300 epochs model checkpoint](https://huggingface.co/ilyassmoummad/ProtoCLR)
+The pre-trained models, which include cross-entropy SimCLR, SupCon, and ProtoCLR and have been trained for 300 epochs, are available on [Hugging Face](https://huggingface.co/ilyassmoummad/ProtoCLR). They can be directly accessed and integrated into your bioacoustic projects.
 
 ### Audio Preparation Guidelines
 To use the model effectively, ensure your audio meets the following criteria:
@@ -32,7 +30,7 @@ To use the model effectively, ensure your audio meets the following criteria:
 - **Chunking (Recommended)**: For audio longer than 6 seconds, consider splitting it into 6-second chunks.
 
 ### Example: Loading, Processing, and Running Inference on an Audio File
-This example demonstrates how to load an audio file, preprocess it, and run inference with the ProtoCLR model. 
+This example demonstrates how to load an audio file, preprocess it, and run inference with a pre-trained model. 
 
 #### Step 1: Download the Model and Code
 First, download the model and code from the [Hugging Face repository](https://huggingface.co/ilyassmoummad/ProtoCLR) using the following command:
@@ -52,7 +50,19 @@ from melspectrogram import MelSpectrogramProcessor  # Import Mel spectrogram pro
 # Initialize preprocessor and model
 preprocessor = MelSpectrogramProcessor()
 model = cvt13()
-model.load_state_dict(torch.load("protoclr.pth"))
+
+# Load weights trained using Cross-Entropy
+model.load_state_dict(torch.load("ce.pth", map_location="cpu")['encoder'])
+
+# Load weights trained using SimCLR (self-supervised contrastive learning)
+model.load_state_dict(torch.load("simclr.pth", map_location="cpu"))
+
+# Load weights trained using SupCon (supervised contrastive learning)
+model.load_state_dict(torch.load("supcon.pth", map_location="cpu"))
+
+# Load weights trained using ProtoCLR (supervised contrastive learning using prototypes)
+model.load_state_dict(torch.load("protoclr.pth", map_location="cpu"))
+
 model.eval()
 
 # Load and preprocess a sample audio waveform
@@ -128,6 +138,12 @@ pip install -r requirements.txt
 
 ```bash
 python3 train_encoder.py --loss protoclr --epochs 300 --nworkers 16 --bs 256 --lr 5e-4 --wd 1e-6 --device cuda:0 --traindir Path_to_Xeno-Canto-6s-16khz/ --evaldir Path_to_parent_folder_of_pow.pt --save --savefreq --freq 100
+```
+
+**Cross-Entropy**
+
+```bash
+python3 train_encoder.py --loss ce --epochs 300 --nworkers 16 --bs 256 --lr 5e-4 --wd 1e-6 --device cuda:0 --traindir Path_to_Xeno-Canto-6s-16khz/ --evaldir Path_to_parent_folder_of_pow.pt --save --savefreq --freq 100
 ```
 
 - **`--loss`**: Specifies the loss function to use. The following losses are supported: `protoclr`, `supcon`, `simclr`, and `ce` (cross-entropy).
