@@ -12,7 +12,7 @@
 ## Overview
 This repository introduces [ProtoCLR](https://arxiv.org/abs/2409.08589), a Prototypical Contrastive Learning approach designed for robust representation learning. ProtoCLR has been validated on transfer learning tasks for bird sound classification, showing strong domain-invariance in few-shot scenarios.
 
-In our approach, focal recordings are utilized for pre-training, while soundscape recordings serve as the evaluation dataset, highlighting ProtoCLR's robustness to domain shifts. The initial results in the preprint are based on models trained for 100 epochs, with an update expected in the coming days/weeks to include results from extended training at 300 epochs (please see the table at the end of this page).
+In our approach, focal recordings are utilized for pre-training, while soundscape recordings serve as the evaluation dataset, highlighting ProtoCLR's robustness to domain shifts. Our models are trained for 300 epochs.
 
 ## Preprint
 Read the full paper: [Domain-Invariant Representation Learning of Bird Sounds](https://arxiv.org/abs/2409.08589)
@@ -167,29 +167,29 @@ python3 test_fewshot.py --modelckpt /path/to/weights.pth --bs 1024 --nworkers 16
 ### Model Performance Comparison
 The following table presents the classification accuracy of various models on one-shot and five-shot bird sound classification tasks, evaluated across different [soundscape datasets](https://zenodo.org/records/13994373).
 
-| Model                     | Model Size | PER         | NES         | UHH         | HSN         | SSW         | SNE         | Mean  |
-|---------------------------|------------|-------------|-------------|-------------|-------------|-------------|-------------|-------|
-| Random Guessing           | -          | 0.75        | 1.12        | 3.70        | 5.26        | 1.04        | 1.78        | 2.22  |
-|                           |            |             |             |             |             |             |             |       |
-| **1-Shot Classification** |            |             |             |             |             |             |             |       |
-| BirdAVES-biox-base        | 90M        | 7.41±1.0    | 26.4±2.3    | 13.2±3.1    | 9.84±3.5    | 8.74±0.6    | 14.1±3.1    | 13.2  |
-| BirdAVES-bioxn-large      | 300M       | 7.59±0.8    | 27.2±3.6    | 13.7±2.9    | 12.5±3.6    | 10.0±1.4    | 14.5±3.2    | 14.2  |
-| BioLingual                | 28M        | 6.21±1.1    | 37.5±2.9    | 17.8±3.5    | 17.6±5.1    | 22.5±4.0    | 26.4±3.4    | 21.3  |
-| Perch                     | 80M        | 9.10±5.3    | 42.4±4.9    | 19.8±5.0    | 26.7±9.8    | 22.3±3.3    | 29.1±5.9    | 24.9  |
-| CE (Ours)                 | 19M        | 9.55±1.5    | 41.3±3.6    | 19.7±4.7    | 25.2±5.7    | 17.8±1.4    | 31.5±5.4    | 24.2  |
-| SimCLR (Ours)             | 19M        | 7.85±1.1    | 31.2±2.4    | 14.9±2.9    | 19.0±3.8    | 10.6±1.1    | 24.0±4.1    | 17.9  |
-| SupCon (Ours)             | 19M        | 8.53±1.1    | 39.8±6.0    | 18.8±3.0    | 20.4±6.9    | 12.6±1.6    | 23.2±3.1    | 20.5  |
-| ProtoCLR (Ours)           | 19M        | 9.23±1.6    | 38.6±5.1    | 18.4±2.3    | 21.2±7.3    | 15.5±2.3    | 25.8±5.2    | 21.4  |
-|                           |            |             |             |             |             |             |             |       |
-| **5-Shot Classification** |            |             |             |             |             |             |             |       |
-| BirdAVES-biox-base        | 90M        | 11.6±0.8    | 39.7±1.8    | 22.5±2.4    | 22.1±3.3    | 16.1±1.7    | 28.3±2.3    | 23.3  |
-| BirdAVES-bioxn-large      | 300M       | 15.0±0.9    | 42.6±2.7    | 23.7±3.8    | 28.4±2.4    | 18.3±1.8    | 27.3±2.3    | 25.8  |
-| BioLingual                | 28M        | 13.6±1.3    | 65.2±1.4    | 31.0±2.9    | 34.3±3.5    | 43.9±0.9    | 49.9±2.3    | 39.6  |
-| Perch                     | 80M        | 21.2±1.2    | 71.7±1.5    | 39.5±3.0    | 52.5±5.9    | 48.0±1.9    | 59.7±1.8    | 48.7  |
-| CE (Ours)                 | 19M        | 21.4±1.3    | 69.2±1.8    | 35.6±3.4    | 48.2±5.5    | 39.9±1.1    | 57.5±2.3    | 45.3  |
-| SimCLR (Ours)             | 19M        | 15.4±1.0    | 54.0±1.8    | 23.0±2.3    | 32.8±4.0    | 22.0±1.2    | 40.7±2.4    | 31.3  |
-| SupCon (Ours)             | 19M        | 17.2±1.3    | 64.6±2.4    | 34.1±2.9    | 42.5±2.9    | 30.8±0.8    | 48.1±2.4    | 39.5  |
-| ProtoCLR (Ours)           | 19M        | 19.2±1.1    | 67.9±2.8    | 36.1±4.3    | 48.0±4.3    | 34.6±2.3    | 48.6±2.8    | 42.4  |
+| Model                     | Training Params (M) | PER         | NES         | UHH         | HSN         | SSW         | SNE         | Mean  |
+|---------------------------|---------------------|-------------|-------------|-------------|-------------|-------------|-------------|-------|
+| Random Guessing           |          -          | 0.75        | 1.12        | 3.70        | 5.26        | 1.04        | 1.78        | 2.22  |
+|                           |                     |             |             |             |             |             |             |       |
+| **1-Shot Classification** |                     |             |             |             |             |             |             |       |
+| BirdAVES-biox-base        |         95          | 7.41±1.0    | 26.4±2.3    | 13.2±3.1    | 9.84±3.5    | 8.74±0.6    | 14.1±3.1    | 13.2  |
+| BirdAVES-bioxn-large      |        316          | 7.59±0.8    | 27.2±3.6    | 13.7±2.9    | 12.5±3.6    | 10.0±1.4    | 14.5±3.2    | 14.2  |
+| BioLingual                |        153          | 6.21±1.1    | 37.5±2.9    | 17.8±3.5    | 17.6±5.1    | 22.5±4.0    | 26.4±3.4    | 21.3  |
+| Perch                     |         80          | 9.10±5.3    | 42.4±4.9    | 19.8±5.0    | 26.7±9.8    | 22.3±3.3    | 29.1±5.9    | 24.9  |
+| CE (Ours)                 |         23          | 9.55±1.5    | 41.3±3.6    | 19.7±4.7    | 25.2±5.7    | 17.8±1.4    | 31.5±5.4    | 24.2  |
+| SimCLR (Ours)             |         19          | 7.85±1.1    | 31.2±2.4    | 14.9±2.9    | 19.0±3.8    | 10.6±1.1    | 24.0±4.1    | 17.9  |
+| SupCon (Ours)             |         19          | 8.53±1.1    | 39.8±6.0    | 18.8±3.0    | 20.4±6.9    | 12.6±1.6    | 23.2±3.1    | 20.5  |
+| ProtoCLR (Ours)           |         19          | 9.23±1.6    | 38.6±5.1    | 18.4±2.3    | 21.2±7.3    | 15.5±2.3    | 25.8±5.2    | 21.4  |
+|                           |                     |             |             |             |             |             |             |       |
+| **5-Shot Classification** |                     |             |             |             |             |             |             |       |
+| BirdAVES-biox-base        |         95          | 11.6±0.8    | 39.7±1.8    | 22.5±2.4    | 22.1±3.3    | 16.1±1.7    | 28.3±2.3    | 23.3  |
+| BirdAVES-bioxn-large      |        316          | 15.0±0.9    | 42.6±2.7    | 23.7±3.8    | 28.4±2.4    | 18.3±1.8    | 27.3±2.3    | 25.8  |
+| BioLingual                |        153          | 13.6±1.3    | 65.2±1.4    | 31.0±2.9    | 34.3±3.5    | 43.9±0.9    | 49.9±2.3    | 39.6  |
+| Perch                     |         80          | 21.2±1.2    | 71.7±1.5    | 39.5±3.0    | 52.5±5.9    | 48.0±1.9    | 59.7±1.8    | 48.7  |
+| CE (Ours)                 |         23          | 21.4±1.3    | 69.2±1.8    | 35.6±3.4    | 48.2±5.5    | 39.9±1.1    | 57.5±2.3    | 45.3  |
+| SimCLR (Ours)             |         19          | 15.4±1.0    | 54.0±1.8    | 23.0±2.3    | 32.8±4.0    | 22.0±1.2    | 40.7±2.4    | 31.3  |
+| SupCon (Ours)             |         19          | 17.2±1.3    | 64.6±2.4    | 34.1±2.9    | 42.5±2.9    | 30.8±0.8    | 48.1±2.4    | 39.5  |
+| ProtoCLR (Ours)           |         19          | 19.2±1.1    | 67.9±2.8    | 36.1±4.3    | 48.0±4.3    | 34.6±2.3    | 48.6±2.8    | 42.4  |
 
 ---
 
