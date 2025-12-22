@@ -137,13 +137,13 @@ pip install -r requirements.txt
 **ProtoCLR**
 
 ```bash
-python3 train_encoder.py --loss protoclr --epochs 300 --nworkers 16 --bs 256 --lr 5e-4 --wd 1e-6 --device cuda:0 --traindir Path_to_Xeno-Canto-6s-16khz/ --evaldir Path_to_parent_folder_of_pow.pt --save --savefreq --freq 100
+python3 train_encoder.py --loss protoclr --epochs 300 --nworkers 16 --bs 256 --lr 5e-4 --wd 1e-6 --device cuda:0 --traindir Path_to_Xeno-Canto-6s-16khz/ --evaldir Path_to_parent_folder_of_pow.pt --save --savefreq 100
 ```
 
 **Cross-Entropy**
 
 ```bash
-python3 train_encoder.py --loss ce --epochs 300 --nworkers 16 --bs 256 --lr 5e-4 --wd 1e-6 --device cuda:0 --traindir Path_to_Xeno-Canto-6s-16khz/ --evaldir Path_to_parent_folder_of_pow.pt --save --savefreq --freq 100
+python3 train_encoder.py --loss ce --epochs 300 --nworkers 16 --bs 256 --lr 5e-4 --wd 1e-6 --device cuda:0 --traindir Path_to_Xeno-Canto-6s-16khz/ --evaldir Path_to_parent_folder_of_pow.pt --save --savefreq 100
 ```
 
 - **`--loss`**: Specifies the loss function to use. The following losses are supported: `protoclr`, `supcon`, `simclr`, and `ce` (cross-entropy).
