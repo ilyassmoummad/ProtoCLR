@@ -122,7 +122,7 @@ def train(encoder, projector, train_loader, val_dataset, train_transform, val_tr
                 best_state_dict_projector = projector.state_dict()
 
         if args.savefreq:   
-            if (epoch+1) % args.freq == 0:
+            if (epoch+1) % args.savefreq == 0:
                 os.makedirs(args.modelpath, exist_ok=True) 
                 best_model_path = os.path.join(args.modelpath, args.model + '_' + args.loss + '_pretrain_' + args.pretrainds + '_epochs' + str(args.epochs) + '_lr' + str(args.lr) + '_trial1.pth')
                 if os.path.isfile(best_model_path):

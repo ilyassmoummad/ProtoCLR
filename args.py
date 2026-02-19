@@ -11,7 +11,7 @@ parser.add_argument("--device", type=str, default='cuda') #device to use ['cpu',
 # Path
 parser.add_argument("--traindir", type=str, default='') #path for the training data
 parser.add_argument("--evaldir", type=str, default='') #path for the evaluation (validation/testing) data
-parser.add_argument("--savepath", type=str, default='') #path where to save checkpoints
+parser.add_argument("--modelpath", type=str, default='') #path where to save checkpoints
 parser.add_argument("--modelckpt", type=str, default='') #path of the checkpoint (.pth)
 
 # Data Processing
@@ -42,6 +42,7 @@ parser.add_argument("--tau", type=float, default=0.1) #temperature for cosine si
 parser.add_argument("--adam", action='store_true') #use adam instead of sgd
 parser.add_argument("--bs", type=int, default=256) #batch size for representation learning
 parser.add_argument("--epochs", type=int, default=100) #nb of epochs to train the feature extractor on the training set
+parser.add_argument("--savefreq", type=int, default=100) #nb of epochs between each model save
 parser.add_argument("--lr", type=float, default=5e-2) #learning rate for pretraining
 parser.add_argument("--momentum", type=float, default=0.9) #sgd momentum
 parser.add_argument("--wd", type=float, default=1e-6) #weight decay
